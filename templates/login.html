@@ -1,19 +1,230 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block content %}
-<h2>Admin Login</h2>
+    <title>BARAKAD SCHOOL MANAGEMENT SYSTEM - Login</title>
 
-<form method="POST">
-    <label>Username:</label>
-    <input type="text" name="username" required>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    <br><br>
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    <label>Password:</label>
-    <input type="password" name="password" required>
+        .login-container {
+            width: 100%;
+            max-width: 950px;
+            min-height: 560px;
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 8px 35px rgba(0,0,0,0.12);
+            display: flex;
+        }
 
-    <br><br>
+        .login-left {
+            width: 42%;
+            background: linear-gradient(135deg, #123c69, #1d5d94);
+            color: white;
+            padding: 45px 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
 
-    <button type="submit">Login</button>
-</form>
-{% endblock %}
+        .login-left img {
+            width: 125px;
+            height: 125px;
+            object-fit: contain;
+            background: white;
+            border-radius: 50%;
+            padding: 8px;
+            margin-bottom: 20px;
+        }
+
+        .school-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .system-name {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .login-right {
+            width: 58%;
+            padding: 60px 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-right h1 {
+            color: #123c69;
+            margin-bottom: 8px;
+            font-size: 28px;
+        }
+
+        .login-right p {
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #1d5d94;
+            box-shadow: 0 0 0 3px rgba(29,93,148,0.12);
+        }
+
+        button {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #123c69;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d5d94;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        @media (max-width: 700px) {
+
+            .login-container {
+                width: 94%;
+                min-height: auto;
+                flex-direction: column;
+            }
+
+            .login-left,
+            .login-right {
+                width: 100%;
+            }
+
+            .login-left {
+                padding: 30px 20px;
+            }
+
+            .login-left img {
+                width: 90px;
+                height: 90px;
+            }
+
+            .login-right {
+                padding: 35px 25px;
+            }
+
+            .login-right h1 {
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="login-left">
+
+        <img
+            src="{{ url_for('static', filename='logo.png') }}"
+            alt="BARAKAD SCHOOL Logo"
+        >
+
+        <div class="school-name">
+            BARAKAD SCHOOL
+        </div>
+
+        <div class="system-name">
+            MANAGEMENT SYSTEM
+        </div>
+
+    </div>
+
+
+    <div class="login-right">
+
+        <h1>Admin Login</h1>
+
+        <p>
+            Welcome to BARAKAD SCHOOL MANAGEMENT SYSTEM
+        </p>
+
+        <form method="POST" action="{{ url_for('login') }}">
+
+            <label>Username</label>
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Enter username"
+                required
+            >
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                name="password"
+                placeholder="Enter password"
+                required
+            >
+
+            <button type="submit">
+                🔐 Login
+            </button>
+
+        </form>
+
+        <div class="footer">
+            © 2026 BARAKAD SCHOOL MANAGEMENT SYSTEM
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
