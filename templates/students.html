@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Students</h2>
+
+<hr>
+
+<h3>Add New Student</h3>
+
+<form method="POST" action="/students/add">
+
+    <label><strong>Student Name:</strong></label>
+    <br>
+
+    <input type="text"
+           name="name"
+           placeholder="Enter student name"
+           required>
+
+    <br><br>
+
+    <label><strong>Select Class:</strong></label>
+    <br>
+
+    <select name="class_name" required>
+
+        <option value="">
+            -- Select Class --
+        </option>
+
+        {% for class_name in classes %}
+
+        <option value="{{ class_name }}">
+            {{ class_name }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <br><br>
+
+    <label><strong>Phone:</strong></label>
+    <br>
+
+    <input type="text"
+           name="phone"
+           placeholder="Enter phone number">
+
+    <br><br>
+
+    <button type="submit">
+        Add Student
+    </button>
+
+</form>
+
+<hr>
+
+<h3>Students List</h3>
+
+<table border="1"
+       cellpadding="8"
+       cellspacing="0">
+
+    <tr>
+
+        <th>ID</th>
+        <th>Student Name</th>
+        <th>Class</th>
+        <th>Phone</th>
+
+    </tr>
+
+    {% if students %}
+
+        {% for student in students %}
+
+        <tr>
+
+            <td>
+                {{ student["id"] }}
+            </td>
+
+            <td>
+                {{ student["name"] }}
+            </td>
+
+            <td>
+                {{ student["class_name"] }}
+            </td>
+
+            <td>
+                {{ student["phone"] }}
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <tr>
+
+            <td colspan="4">
+                Weli arday lama gelin.
+            </td>
+
+        </tr>
+
+    {% endif %}
+
+</table>
+
+<br>
+
+<a href="/dashboard">
+    ← Back to Dashboard
+</a>
+
+{% endblock %}

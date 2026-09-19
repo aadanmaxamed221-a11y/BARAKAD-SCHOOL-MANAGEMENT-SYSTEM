@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Users Management</h2>
+
+<hr>
+
+<h3>Create Teacher or Student Account</h3>
+
+<form method="POST" action="/users/add">
+
+    <label><strong>Username:</strong></label><br>
+    <input type="text" name="username" required>
+
+    <br><br>
+
+    <label><strong>Password:</strong></label><br>
+    <input type="password" name="password" required>
+
+    <br><br>
+
+    <label><strong>Account Type:</strong></label><br>
+    <select name="role" id="role" onchange="changeAccountType()" required>
+        <option value="">-- Select --</option>
+        <option value="teacher">Teacher</option>
+        <option value="student">Student</option>
+    </select>
+
+    <br><br>
+
+    <div id="teacherBox" style="display:none;">
+        <label><strong>Select Teacher:</strong></label><br>
+        <select name="teacher_name">
+            <option value="">-- Select Teacher --</option>
+
+            {% for teacher in teachers %}
+            <option value="{{ teacher['name'] }}">
+                {{ teacher['name'] }} - {{ teacher['subject'] }}
+            </option>
+            {% endfor %}
+
+        </select>
+    </div>
+
+    <div id="studentBox" style="display:none;">
+        <label><strong>Select Student:</strong></label><br>
+        <select name="student_name">
+            <option value="">-- Select Student --</option>
+
+            {% for student in students %}
+            <option value="{{ student['name'] }}">
+                {{ student['name'] }} - {{ student['class_name'] }}
+            </option>
+            {% endfor %}
+
+        </select>
+    </div>
+
+    <br>
+
+    <h3>Permissions</h3>
+
+    <p><strong>Admin ayaa go'aaminaya waxa user-ku arki karo.</strong></p>
+
+    <div id="permissionBox">
+
+        {% for permission in permissions %}
+
+        <label>
+            <input
+                type="checkbox"
+                name="permissions"
+                value="{{ permission }}"
+            >
+
+            {{ permission }}
+
+        </label>
+
+        <br>
+
+        {% endfor %}
+
+    </div>
+
+    <br>
+
+    <button type="submit">Create Account</button>
+
+</form>
+
+<hr>
+
+<h3>All Users</h3>
+
+{% if users %}
+
+<table border="1" cellpadding="8" cellspacing="0">
+
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Role</th>
+        <th>Teacher</th>
+        <th>Student</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    {% for user in users %}
+
+    <tr>
+
+        <td>{{ user["id"] }}</td>
+
+        <td>
+            <strong>{{ user["username"] }}</strong>
+        </td>
+
+        <td>{{ user["role"] }}</td>
+
+        <td>
+            {{ user["teacher_name"] or "-" }}
+        </td>
+
+        <td>
+            {{ user["student_name"] or "-" }}
+        </td>
+
+        <td>
+            {% if user["active"] %}
+                Active
+            {% else %}
+                Disabled
+            {% endif %}
+        </td>
+
+        <td>
+
+            {% if user["role"] != "admin" %}
+
+            <form
+                method="POST"
+                action="/users/toggle/{{ user['id'] }}"
+                style="display:inline;"
+            >
+
+                {% if user["active"] %}
+                    <button type="submit">Disable</button>
+                {% else %}
+                    <button type="submit">Enable</button>
+                {% endif %}
+
+            </form>
+
+            {% else %}
+
+                Admin
+
+            {% endif %}
+
+        </td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% else %}
+
+<p><strong>Weli user kale lama sameyn.</strong></p>
+
+{% endif %}
+
+<br>
+
+<a href="/dashboard">← Back to Dashboard</a>
+
+
+<script>
+
+function changeAccountType() {
+
+    const role = document.getElementById("role").value;
+
+    const teacherBox = document.getElementById("teacherBox");
+    const studentBox = document.getElementById("studentBox");
+
+    teacherBox.style.display = "none";
+    studentBox.style.display = "none";
+
+    if (role === "teacher") {
+        teacherBox.style.display = "block";
+    }
+
+    if (role === "student") {
+        studentBox.style.display = "block";
+    }
+}
+
+</script>
+
+{% endblock %}

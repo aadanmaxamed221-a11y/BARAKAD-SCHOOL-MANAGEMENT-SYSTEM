@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Classes</h2>
+<p>System-ku wuxuu ku bilaabmaa 12-ka class ee BARAKAD. Class cusub waxaa ku dari kara Admin oo keliya.</p>
+<hr>
+
+{% if logged_user and logged_user["role"] == "admin" %}
+<h3>Add New Class</h3>
+<form method="POST" action="/classes/add">
+    <input type="text" name="name" placeholder="Class name" required>
+    <br><br>
+    <button type="submit">Add Class</button>
+</form>
+<hr>
+{% endif %}
+
+<h3>School Classes</h3>
+<table border="1" cellpadding="8" cellspacing="0">
+<tr>
+    <th>ID</th>
+    <th>Class</th>
+</tr>
+{% for item in classes %}
+<tr>
+    <td>{{ item["id"] }}</td>
+    <td><strong>{{ item["name"] }}</strong></td>
+</tr>
+{% endfor %}
+</table>
+
+<br>
+<a href="/dashboard">← Back to Dashboard</a>
+
+{% endblock %}

@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Lesson Plan</h2>
+
+<hr>
+
+<h3>Add New Lesson Plan</h3>
+
+<form method="POST" action="/lesson-plan/add">
+
+    <label><strong>Teacher:</strong></label>
+    <br>
+    <input type="text" name="teacher" required>
+
+    <br><br>
+
+    <label><strong>Class:</strong></label>
+    <br>
+
+    <select name="class_name" id="class_name" required onchange="updateSubjects()">
+
+        <option value="">-- Select Class --</option>
+
+        {% for class_name in classes %}
+
+        <option value="{{ class_name }}">
+            {{ class_name }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <br><br>
+
+    <label><strong>Subject:</strong></label>
+    <br>
+
+    <select name="subject" id="subject" required>
+
+        <option value="">-- Select Class First --</option>
+
+    </select>
+
+    <br><br>
+
+    <label><strong>Lesson / Topic:</strong></label>
+    <br>
+
+    <textarea
+        name="lesson"
+        rows="5"
+        cols="40"
+        required
+    ></textarea>
+
+    <br><br>
+
+    <label><strong>Date:</strong></label>
+    <br>
+
+    <input
+        type="date"
+        name="date"
+        required
+    >
+
+    <br><br>
+
+    <button type="submit">
+        Save Lesson Plan
+    </button>
+
+</form>
+
+<hr>
+
+<h3>Lesson Plan Records</h3>
+
+<table border="1" cellpadding="8" cellspacing="0">
+
+    <tr>
+        <th>ID</th>
+        <th>Teacher</th>
+        <th>Class</th>
+        <th>Subject</th>
+        <th>Lesson</th>
+        <th>Date</th>
+    </tr>
+
+    {% if lesson_plans %}
+
+        {% for item in lesson_plans %}
+
+        <tr>
+
+            <td>
+                {{ item["id"] }}
+            </td>
+
+            <td>
+                {{ item["teacher"] }}
+            </td>
+
+            <td>
+                {{ item["class_name"] }}
+            </td>
+
+            <td>
+                {{ item["subject"] }}
+            </td>
+
+            <td>
+                {{ item["lesson"] }}
+            </td>
+
+            <td>
+                {{ item["date"] }}
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <tr>
+            <td colspan="6">
+                Weli Lesson Plan lama gelin.
+            </td>
+        </tr>
+
+    {% endif %}
+
+</table>
+
+<br>
+
+<a href="/dashboard">
+    ← Back to Dashboard
+</a>
+
+
+<script>
+
+function updateSubjects() {
+
+    const className =
+        document.getElementById("class_name").value;
+
+    const subject =
+        document.getElementById("subject");
+
+    subject.innerHTML = "";
+
+
+    let subjects = [];
+
+
+    // DUGSIGA HOOSE
+    // 1aad - 4aad
+
+    if (
+        className === "1aad" ||
+        className === "2aad" ||
+        className === "3aad" ||
+        className === "4aad"
+    ) {
+
+        subjects = [
+            "Soomaali",
+            "Cilmiga Bulshada",
+            "Xisaab",
+            "Seynis",
+            "Carabi",
+            "English",
+            "Teknooloji",
+            "Islamic"
+        ];
+
+    }
+
+
+    // DUGSIGA DHEXE
+    // 5aad - 8aad
+
+    else if (
+        className === "5aad" ||
+        className === "6aad" ||
+        className === "7aad" ||
+        className === "8aad"
+    ) {
+
+        subjects = [
+            "Soomaali",
+            "Cilmiga Bulshada",
+            "Xisaab",
+            "Seynis",
+            "English",
+            "Teknooloji",
+            "Islamic",
+            "Carabi"
+        ];
+
+    }
+
+
+    // DUGSIGA SARE
+    // Form One - Form Four
+
+    else if (
+        className === "Form One" ||
+        className === "Form Two" ||
+        className === "Form Three" ||
+        className === "Form Four"
+    ) {
+
+        subjects = [
+            "Soomaali",
+            "Math",
+            "Biology",
+            "Chemistry",
+            "Physics",
+            "Business",
+            "Juqraafi",
+            "Taariikh",
+            "English",
+            "Islamic",
+            "Carabi",
+            "Technology"
+        ];
+
+    }
+
+
+    subjects.forEach(function(item) {
+
+        const option =
+            document.createElement("option");
+
+        option.value = item;
+
+        option.textContent = item;
+
+        subject.appendChild(option);
+
+    });
+
+}
+
+</script>
+
+{% endblock %}

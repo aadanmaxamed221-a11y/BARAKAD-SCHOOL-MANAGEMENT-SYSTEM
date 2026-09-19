@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>School Calendar</h2>
+
+<hr>
+
+<h3>Add Calendar Event</h3>
+
+<form method="POST" action="/calendar/add">
+
+    <label><strong>Event / Title:</strong></label><br>
+    <input type="text" name="title" placeholder="Tusaale: Parent Meeting" required>
+
+    <br><br>
+
+    <label><strong>Date:</strong></label><br>
+    <input type="date" name="date" required>
+
+    <br><br>
+
+    <label><strong>Description:</strong></label><br>
+    <textarea name="description" rows="5" cols="45"
+              placeholder="Faahfaahinta event-ka"></textarea>
+
+    <br><br>
+
+    <button type="submit">Save Event</button>
+
+</form>
+
+<hr>
+
+<h3>Calendar Events</h3>
+
+{% if calendar %}
+
+<table border="1" cellpadding="8" cellspacing="0">
+
+    <tr>
+        <th>ID</th>
+        <th>Event / Title</th>
+        <th>Date</th>
+        <th>Description</th>
+    </tr>
+
+    {% for item in calendar %}
+
+    <tr>
+        <td>{{ item["id"] }}</td>
+        <td><strong>{{ item["title"] }}</strong></td>
+        <td>{{ item["date"] }}</td>
+        <td>{{ item["description"] }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% else %}
+
+<p><strong>Weli Calendar event lama gelin.</strong></p>
+
+{% endif %}
+
+<br>
+
+<a href="/dashboard">← Back to Dashboard</a>
+
+{% endblock %}

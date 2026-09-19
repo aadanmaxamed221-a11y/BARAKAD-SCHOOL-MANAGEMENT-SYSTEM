@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>School Reports</h2>
+
+<hr>
+
+<h3>Create New Report</h3>
+
+<form method="POST" action="/reports/add">
+
+    <label><strong>Report Title:</strong></label><br>
+    <input type="text" name="title" placeholder="Tusaale: Monthly School Report" required>
+
+    <br><br>
+
+    <label><strong>Date:</strong></label><br>
+    <input type="date" name="date" required>
+
+    <br><br>
+
+    <label><strong>Report Content:</strong></label><br>
+    <textarea
+        name="content"
+        rows="8"
+        cols="50"
+        placeholder="Halkan ku qor warbixinta..."
+        required
+    ></textarea>
+
+    <br><br>
+
+    <button type="submit">Save Report</button>
+
+</form>
+
+<hr>
+
+<h3>Saved Reports</h3>
+
+{% if reports %}
+
+<table border="1" cellpadding="8" cellspacing="0">
+
+    <tr>
+        <th>ID</th>
+        <th>Report Title</th>
+        <th>Date</th>
+        <th>Report Content</th>
+    </tr>
+
+    {% for report in reports %}
+
+    <tr>
+        <td>{{ report["id"] }}</td>
+
+        <td>
+            <strong>{{ report["title"] }}</strong>
+        </td>
+
+        <td>{{ report["date"] }}</td>
+
+        <td>{{ report["content"] }}</td>
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% else %}
+
+<p><strong>Weli Report lama gelin.</strong></p>
+
+{% endif %}
+
+<br>
+
+<a href="/dashboard">← Back to Dashboard</a>
+
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Settings</h2>
+<hr>
+
+<h3>Change My Password</h3>
+<form method="POST">
+    <input type="hidden" name="action" value="change_my_password">
+
+    <label>Old Password</label><br>
+    <input type="password" name="old_password" required><br><br>
+
+    <label>New Password</label><br>
+    <input type="password" name="new_password" minlength="4" required><br><br>
+
+    <label>Confirm New Password</label><br>
+    <input type="password" name="confirm_password" minlength="4" required><br><br>
+
+    <button type="submit">Change Password</button>
+</form>
+
+{% if logged_user and logged_user["role"] == "admin" %}
+<hr>
+
+<h3>School Information</h3>
+<form method="POST">
+    <input type="hidden" name="action" value="school">
+
+    <label>School Name</label><br>
+    <input type="text" name="school_name" value="{{ school['school_name'] }}" required><br><br>
+
+    <label>Phone</label><br>
+    <input type="text" name="phone" value="{{ school['phone'] or '' }}"><br><br>
+
+    <label>WhatsApp</label><br>
+    <input type="text" name="whatsapp" value="{{ school['whatsapp'] or '' }}"><br><br>
+
+    <label>Address</label><br>
+    <input type="text" name="address" value="{{ school['address'] or '' }}"><br><br>
+
+    <button type="submit">Save School Information</button>
+</form>
+
+<hr>
+
+<h3>Admin Username & Password</h3>
+<form method="POST">
+    <input type="hidden" name="action" value="admin_account">
+
+    <label>Admin Username</label><br>
+    <input type="text" name="username" value="{{ logged_user['username'] }}" required><br><br>
+
+    <label>New Admin Password</label><br>
+    <input type="password" name="password" minlength="4" placeholder="Leave empty to keep current password"><br><br>
+
+    <button type="submit">Save Admin Account</button>
+</form>
+
+<hr>
+
+<h3>Change Other User Username / Password</h3>
+{% if users %}
+{% for item in users %}
+    {% if item['role'] != 'admin' %}
+    <form method="POST" style="border:1px solid #ddd;padding:15px;margin-bottom:10px;">
+        <input type="hidden" name="action" value="user_account">
+        <input type="hidden" name="user_id" value="{{ item['id'] }}">
+
+        <strong>{{ item['role'] }}</strong> — {{ item['username'] }}<br><br>
+
+        <label>Username</label><br>
+        <input type="text" name="username" value="{{ item['username'] }}" required><br><br>
+
+        <label>New Password</label><br>
+        <input type="password" name="password" minlength="4" placeholder="Leave empty to keep current password"><br><br>
+
+        <button type="submit">Update User</button>
+    </form>
+    {% endif %}
+{% endfor %}
+{% else %}
+<p>Weli Teacher/Student user lama sameyn.</p>
+{% endif %}
+{% endif %}
+
+<br>
+<a href="/dashboard">← Back to Dashboard</a>
+
+{% endblock %}

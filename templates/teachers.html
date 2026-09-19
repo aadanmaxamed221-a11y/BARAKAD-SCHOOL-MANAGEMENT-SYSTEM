@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Teachers</h2>
+
+<hr>
+
+<h3>Add New Teacher</h3>
+
+<form method="POST" action="/teachers/add">
+
+    <label><strong>Teacher Name:</strong></label>
+    <br>
+
+    <input type="text"
+           name="name"
+           placeholder="Enter teacher name"
+           required>
+
+    <br><br>
+
+    <label><strong>Subject:</strong></label>
+    <br>
+
+    <input type="text"
+           name="subject"
+           placeholder="Enter subject"
+           required>
+
+    <br><br>
+
+    <label><strong>Phone:</strong></label>
+    <br>
+
+    <input type="text"
+           name="phone"
+           placeholder="Enter phone number">
+
+    <br><br>
+
+    <button type="submit">
+        Add Teacher
+    </button>
+
+</form>
+
+<hr>
+
+<h3>Teachers List</h3>
+
+<table border="1"
+       cellpadding="8"
+       cellspacing="0">
+
+    <tr>
+        <th>ID</th>
+        <th>Teacher Name</th>
+        <th>Subject</th>
+        <th>Phone</th>
+    </tr>
+
+    {% if teachers %}
+
+        {% for teacher in teachers %}
+
+        <tr>
+
+            <td>
+                {{ teacher["id"] }}
+            </td>
+
+            <td>
+                {{ teacher["name"] }}
+            </td>
+
+            <td>
+                {{ teacher["subject"] }}
+            </td>
+
+            <td>
+                {{ teacher["phone"] }}
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <tr>
+
+            <td colspan="4">
+                Weli teacher lama gelin.
+            </td>
+
+        </tr>
+
+    {% endif %}
+
+</table>
+
+<br>
+
+<a href="/dashboard">
+    ← Back to Dashboard
+</a>
+
+{% endblock %}

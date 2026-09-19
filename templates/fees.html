@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>💰 Fees Management</h2>
+
+<div class="cards">
+
+    <div class="card">
+        <h3>💰 School Paid</h3>
+        <div class="card-number">{{ school_total }}</div>
+        <p>Total lacagta iskuulka soo gashay</p>
+    </div>
+
+    <div class="card">
+        <h3>❌ Unpaid</h3>
+        <div class="card-number">{{ school_unpaid }}</div>
+        <p>Total lacagta aan la bixin</p>
+    </div>
+
+    <div class="card">
+        <h3>⏳ Partial</h3>
+        <div class="card-number">{{ school_partial }}</div>
+        <p>Total lacagta qayb ahaan loo bixiyay</p>
+    </div>
+
+    <div class="card">
+        <h3>📋 Records</h3>
+        <div class="card-number">{{ total_records }}</div>
+        <p>Total fee records</p>
+    </div>
+
+</div>
+
+<hr>
+
+<div class="card">
+
+    <h3>🏫 Select Class</h3>
+
+    <form method="GET" action="/fees">
+
+        <select name="class_name" required>
+
+            <option value="">-- Select Class --</option>
+
+            {% for class_name in classes %}
+
+            <option value="{{ class_name }}"
+                {% if selected_class == class_name %}
+                selected
+                {% endif %}>
+                {{ class_name }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+        <br><br>
+
+        <button type="submit">
+            🔍 Select Class
+        </button>
+
+    </form>
+
+</div>
+
+{% if selected_class %}
+
+<hr>
+
+<div class="card">
+
+    <h2>📚 {{ selected_class }}</h2>
+
+    <h3>Class Paid Total</h3>
+
+    <div class="card-number">
+        {{ class_total }}
+    </div>
+
+    <p>
+        Wadarta lacagta Paid ee fasalkan.
+    </p>
+
+</div>
+
+<br>
+
+<div class="card">
+
+    <h3>➕ Add Student Fee</h3>
+
+    {% if students %}
+
+    <form method="POST" action="/fees/add">
+
+        <label>Student:</label>
+
+        <select name="student_name" required>
+
+            <option value="">
+                -- Select Student --
+            </option>
+
+            {% for student in students %}
+
+            <option value="{{ student['name'] }}">
+                {{ student['name'] }}
+            </option>
+
+            {% endfor %}
+
+        </select>
+
+        <br><br>
+
+        <label>Amount:</label>
+
+        <input
+            type="number"
+            name="amount"
+            min="0"
+            step="0.01"
+            placeholder="Enter amount"
+            required
+        >
+
+        <br><br>
+
+        <label>Status:</label>
+
+        <select name="status" required>
+
+            <option value="">
+                -- Select Status --
+            </option>
+
+            <option value="Paid">
+                Paid
+            </option>
+
+            <option value="Unpaid">
+                Unpaid
+            </option>
+
+            <option value="Partial">
+                Partial
+            </option>
+
+        </select>
+
+        <br><br>
+
+        <button type="submit">
+            💾 Save Fee
+        </button>
+
+    </form>
+
+    {% else %}
+
+    <p>
+        ⚠️ Weli arday laguma darin
+        <strong>{{ selected_class }}</strong>.
+    </p>
+
+    <a href="/students">
+        ➕ Add Student
+    </a>
+
+    {% endif %}
+
+</div>
+
+{% endif %}
+
+<hr>
+
+<div class="table-container">
+
+    <h3>📋 All Fee Records</h3>
+
+    <table>
+
+        <tr>
+            <th>ID</th>
+            <th>Student</th>
+            <th>Class</th>
+            <th>Amount</th>
+            <th>Status</th>
+        </tr>
+
+        {% if fees %}
+
+        {% for fee in fees %}
+
+        <tr>
+
+            <td>
+                {{ fee["id"] }}
+            </td>
+
+            <td>
+                {{ fee["student_name"] }}
+            </td>
+
+            <td>
+                {{ fee["class_name"] }}
+            </td>
+
+            <td>
+                {{ fee["amount"] }}
+            </td>
+
+            <td>
+
+                {% if fee["status"] == "Paid" %}
+
+                <span class="badge paid">
+                    Paid
+                </span>
+
+                {% elif fee["status"] == "Unpaid" %}
+
+                <span class="badge unpaid">
+                    Unpaid
+                </span>
+
+                {% else %}
+
+                <span class="badge">
+                    Partial
+                </span>
+
+                {% endif %}
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+        {% else %}
+
+        <tr>
+            <td colspan="5">
+                Weli fee lama gelin.
+            </td>
+        </tr>
+
+        {% endif %}
+
+    </table>
+
+</div>
+
+<br>
+
+<a href="/dashboard">
+    ← Back to Dashboard
+</a>
+
+{% endblock %}

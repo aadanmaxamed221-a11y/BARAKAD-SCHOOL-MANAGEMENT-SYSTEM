@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Student Results</h2>
+<hr>
+
+{% if logged_user and logged_user["role"] == "student" %}
+
+<div class="cards">
+    <div class="card">
+        <h3>Student</h3>
+        <strong>{{ logged_user["student_name"] }}</strong>
+    </div>
+    <div class="card">
+        <h3>Class</h3>
+        <strong>{{ selected_class }}</strong>
+    </div>
+    <div class="card">
+        <h3>Attendance %</h3>
+        <strong>{{ attendance_summary["percentage"] }}%</strong>
+    </div>
+    <div class="card">
+        <h3>Present</h3>
+        <strong>{{ attendance_summary["present"] }}</strong>
+    </div>
+    <div class="card">
+        <h3>Absent</h3>
+        <strong>{{ attendance_summary["absent"] }}</strong>
+    </div>
+    <div class="card">
+        <h3>Late</h3>
+        <strong>{{ attendance_summary["late"] }}</strong>
+    </div>
+</div>
+
+<hr>
+<h3>My Results</h3>
+
+{% if results %}
+<table border="1" cellpadding="8" cellspacing="0">
+<tr>
+    <th>Exam</th>
+    <th>Date</th>
+    <th>Subject</th>
+    <th>Marks</th>
+    <th>Pass Mark</th>
+    <th>Average</th>
+    <th>Rank</th>
+    <th>Status</th>
+</tr>
+{% for result in results %}
+<tr>
+    <td>{{ result["exam_name"] }}</td>
+    <td>{{ result["exam_date"] }}</td>
+    <td><strong>{{ result["subject"] }}</strong></td>
+    <td>{{ result["marks"] }}%</td>
+    <td>{{ result["pass_mark"] }}%</td>
+    <td>{{ result["average"] }}%</td>
+    <td>{{ result["rank"] }}</td>
+    <td>
+        {% if result["status"] == "Gudbay" %}
+            <strong>Gudbay</strong>
+        {% else %}
+            <strong>Haray</strong>
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<p><strong>Weli Results laguma gelin.</strong></p>
+{% endif %}
+
+<hr>
+<h3>My Attendance</h3>
+
+{% if attendance_records_student %}
+<table border="1" cellpadding="8" cellspacing="0">
+<tr>
+    <th>Date</th>
+    <th>Class</th>
+    <th>Status</th>
+</tr>
+{% for item in attendance_records_student %}
+<tr>
+    <td>{{ item["date"] }}</td>
+    <td>{{ item["class_name"] }}</td>
+    <td>
+        {% if item["status"] == "Present" %}
+            <strong>Joogay</strong>
+        {% elif item["status"] == "Absent" %}
+            <strong>Maqnaa</strong>
+        {% else %}
+            <strong>Daahay</strong>
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+</table>
+{% else %}
+<p><strong>Weli Attendance laguma gelin.</strong></p>
+{% endif %}
+
+{% else %}
+
+<h3>Select Class</h3>
+<form method="GET" action="/results">
+    <label><strong>Class:</strong></label>
+    <select name="class_name" required>
+        <option value="">-- Select Class --</option>
+        {% for class_name in classes %}
+        <option value="{{ class_name }}" {% if selected_class == class_name %}selected{% endif %}>
+            {{ class_name }}
+        </option>
+        {% endfor %}
+    </select>
+    <button type="submit">Select Class</button>
+</form>
+
+{% if selected_class %}
+<hr>
+<h3>Results - {{ selected_class }}</h3>
+
+{% if "results_edit" in logged_permissions %}
+<form method="POST" action="/results">
+    <input type="hidden" name="action" value="save">
+    <input type="hidden" name="class_name" value="{{ selected_class }}">
+
+    <label><strong>Exam:</strong></label><br>
+    <select name="exam_id" required>
+        <option value="">-- Select Exam --</option>
+        {% for exam in exams %}
+        <option value="{{ exam['id'] }}">{{ exam["name"] }} - {{ exam["date"] }}</option>
+        {% endfor %}
+    </select>
+    <br><br>
+
+    <label><strong>Student:</strong></label><br>
+    <select name="student_name" required>
+        <option value="">-- Select Student --</option>
+        {% for student in students %}
+        <option value="{{ student['name'] }}">{{ student['name'] }}</option>
+        {% endfor %}
+    </select>
+    <br><br>
+
+    <label><strong>Subject:</strong></label><br>
+    <select name="subject" required>
+        <option value="">-- Select Subject --</option>
+        {% for subject in subjects %}
+        <option value="{{ subject }}">{{ subject }}</option>
+        {% endfor %}
+    </select>
+    <br><br>
+
+    <label><strong>Marks:</strong></label><br>
+    <input type="number" name="marks" min="0" max="100" step="0.01" required>
+    <br><br>
+
+    <label><strong>Pass Mark:</strong></label><br>
+    <input type="number" name="pass_mark" min="0" max="100" value="50" step="0.01" required>
+    <br><br>
+
+    <button type="submit">Save Result</button>
+</form>
+{% endif %}
+
+<hr>
+<h3>Student Results</h3>
+<table border="1" cellpadding="8" cellspacing="0">
+<tr>
+    <th>Rank</th>
+    <th>Student</th>
+    <th>Exam</th>
+    <th>Subject</th>
+    <th>Marks</th>
+    <th>Average</th>
+    <th>Status</th>
+</tr>
+{% if results %}
+{% for result in results %}
+<tr>
+    <td>{{ result["rank"] }}</td>
+    <td>{{ result["student_name"] }}</td>
+    <td>{{ result["exam_name"] }}</td>
+    <td>{{ result["subject"] }}</td>
+    <td>{{ result["marks"] }}%</td>
+    <td>{{ result["average"] }}%</td>
+    <td>{{ result["status"] }}</td>
+</tr>
+{% endfor %}
+{% else %}
+<tr><td colspan="7">Weli result lama gelin.</td></tr>
+{% endif %}
+</table>
+{% endif %}
+
+{% endif %}
+
+<br>
+<a href="/dashboard">← Back to Dashboard</a>
+
+{% endblock %}

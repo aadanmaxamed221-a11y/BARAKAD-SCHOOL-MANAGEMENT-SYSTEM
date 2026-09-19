@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Admin Dashboard</h2>
+
+<hr>
+
+<h3>BARAKAD SCHOOL MANAGEMENT SYSTEM</h3>
+
+<p>Admin-ka wuxuu si buuxda u maamuli karaa system-ka.</p>
+
+<table border="1" cellpadding="10" cellspacing="0">
+
+<tr>
+    <th>Qaybta</th>
+    <th>Tirada</th>
+</tr>
+
+<tr>
+    <td>Students</td>
+    <td>{{ students_count }}</td>
+</tr>
+
+<tr>
+    <td>Teachers</td>
+    <td>{{ teachers_count }}</td>
+</tr>
+
+<tr>
+    <td>Parents</td>
+    <td>{{ parents_count }}</td>
+</tr>
+
+<tr>
+    <td>Classes</td>
+    <td>{{ classes_count }}</td>
+</tr>
+
+<tr>
+    <td>Exams</td>
+    <td>{{ exams_count }}</td>
+</tr>
+
+<tr>
+    <td>Results</td>
+    <td>{{ results_count }}</td>
+</tr>
+
+<tr>
+    <td>Users</td>
+    <td>{{ users_count }}</td>
+</tr>
+
+</table>
+
+<br>
+
+<h3>Admin Management</h3>
+
+<ul>
+    <li><a href="/students">Students</a></li>
+    <li><a href="/teachers">Teachers</a></li>
+    <li><a href="/parents">Parents</a></li>
+    <li><a href="/classes">Classes</a></li>
+    <li><a href="/fees">Fees</a></li>
+    <li><a href="/attendance">Attendance</a></li>
+    <li><a href="/exams">Exams</a></li>
+    <li><a href="/results">Results</a></li>
+    <li><a href="/lesson-plan">Lesson Plan</a></li>
+    <li><a href="/calendar">Calendar</a></li>
+    <li><a href="/reports">Reports</a></li>
+    <li><a href="/users">Users & Permissions</a></li>
+</ul>
+
+<hr>
+
+<a href="/dashboard">← Back to Dashboard</a>
+
+{% endblock %}

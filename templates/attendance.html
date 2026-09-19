@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Attendance</h2>
+<hr>
+
+{% if logged_user and logged_user["role"] == "student" %}
+<p><strong>Student:</strong> {{ logged_user["student_name"] }}</p>
+<p>Student-ku wuxuu arki karaa attendance-kiisa oo keliya.</p>
+{% else %}
+<h3>Select Class and Date</h3>
+<form method="GET" action="/attendance">
+    <label><strong>Class:</strong></label><br>
+    <select name="class_name" required>
+        <option value="">-- Select Class --</option>
+        {% for class_name in classes %}
+        <option value="{{ class_name }}" {% if selected_class == class_name %}selected{% endif %}>
+            {{ class_name }}
+        </option>
+        {% endfor %}
+    </select>
+    <br><br>
+    <label><strong>Date:</strong></label><br>
+    <input type="date" name="date" value="{{ selected_date }}">
+    <br><br>
+    <button type="submit">Show Attendance</button>
+</form>
+{% endif %}
+
+{% if selected_class and students %}
+<hr>
+<h3>Attendance - {{ selected_class }}</h3>
+
+<div class="cards">
+    <div class="card"><h3>Present</h3><strong>{{ total_present }}</strong></div>
+    <div class="card"><h3>Absent</h3><strong>{{ total_absent }}</strong></div>
+    <div class="card"><h3>Late</h3><strong>{{ total_late }}</strong></div>
+</div>
+
+{% if logged_user and logged_user["role"] != "student" %}
+<hr>
+<form method="POST" action="/attendance/save">
+    <input type="hidden" name="class_name" value="{{ selected_class }}">
+    <input type="hidden" name="date" value="{{ selected_date }}">
+
+    <table border="1" cellpadding="8" cellspacing="0">
+    <tr>
+        <th>Student</th>
+        <th>Status</th>
+    </tr>
+    {% for student in students %}
+    <tr>
+        <td>{{ student["name"] }}</td>
+        <td>
+            <input type="hidden" name="student_id" value="{{ student['id'] }}">
+            <select name="status">
+                <option value="Present">Joogay</option>
+                <option value="Absent">Maqnaa</option>
+                <option value="Late">Daahay</option>
+            </select>
+        </td>
+    </tr>
+    {% endfor %}
+    </table>
+    <br>
+    <button type="submit">Save Attendance</button>
+</form>
+{% endif %}
+{% endif %}
+
+{% if attendance_records %}
+<hr>
+<h3>Attendance Records</h3>
+<table border="1" cellpadding="8" cellspacing="0">
+<tr>
+    <th>Date</th>
+    <th>Student</th>
+    <th>Class</th>
+    <th>Status</th>
+</tr>
+{% for item in attendance_records %}
+<tr>
+    <td>{{ item["date"] }}</td>
+    <td>{{ item["student_name"] }}</td>
+    <td>{{ item["class_name"] }}</td>
+    <td>{{ item["status"] }}</td>
+</tr>
+{% endfor %}
+</table>
+{% endif %}
+
+<br>
+<a href="/dashboard">← Back to Dashboard</a>
+
+{% endblock %}

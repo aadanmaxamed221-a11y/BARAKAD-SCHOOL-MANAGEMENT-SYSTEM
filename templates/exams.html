@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Exams Management</h2>
+
+<hr>
+
+<h3>Select Class</h3>
+
+<form method="GET" action="/exams">
+
+    <label><strong>Class:</strong></label>
+
+    <select name="class_name" required>
+
+        <option value="">-- Select Class --</option>
+
+        {% for class_name in classes %}
+
+        <option
+            value="{{ class_name }}"
+            {% if selected_class == class_name %}
+            selected
+            {% endif %}
+        >
+            {{ class_name }}
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <button type="submit">
+        Select Class
+    </button>
+
+</form>
+
+
+{% if selected_class %}
+
+<hr>
+
+<h3>Exam for {{ selected_class }}</h3>
+
+<form method="POST" action="/exams/add">
+
+    <input
+        type="hidden"
+        name="class_name"
+        value="{{ selected_class }}"
+    >
+
+    <label>
+        <strong>Exam Type:</strong>
+    </label>
+
+    <br>
+
+    <select name="name" required>
+
+        <option value="">
+            -- Select Exam --
+        </option>
+
+        <option value="Monthly 1">
+            Monthly 1
+        </option>
+
+        <option value="Midterm">
+            Midterm
+        </option>
+
+        <option value="Monthly 2">
+            Monthly 2
+        </option>
+
+        <option value="Final">
+            Final
+        </option>
+
+    </select>
+
+    <br><br>
+
+    <label>
+        <strong>Date:</strong>
+    </label>
+
+    <br>
+
+    <input
+        type="date"
+        name="date"
+        required
+    >
+
+    <br><br>
+
+    <button type="submit">
+        Add Exam
+    </button>
+
+</form>
+
+{% endif %}
+
+
+<hr>
+
+<h3>Exam List</h3>
+
+<table border="1" cellpadding="8" cellspacing="0">
+
+    <tr>
+        <th>ID</th>
+        <th>Exam</th>
+        <th>Class</th>
+        <th>Date</th>
+    </tr>
+
+    {% if exams %}
+
+        {% for exam in exams %}
+
+        <tr>
+
+            <td>
+                {{ exam["id"] }}
+            </td>
+
+            <td>
+                {{ exam["name"] }}
+            </td>
+
+            <td>
+                {{ exam["class_name"] }}
+            </td>
+
+            <td>
+                {{ exam["date"] }}
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <tr>
+            <td colspan="4">
+                Weli exam lama gelin.
+            </td>
+        </tr>
+
+    {% endif %}
+
+</table>
+
+<br>
+
+<a href="/dashboard">
+    ← Back to Dashboard
+</a>
+
+{% endblock %}

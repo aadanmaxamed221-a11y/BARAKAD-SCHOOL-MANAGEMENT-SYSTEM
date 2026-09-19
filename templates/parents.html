@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Parents</h2>
+
+<hr>
+
+<h3>Add New Parent</h3>
+
+<form method="POST" action="/parents/add">
+
+    <label><strong>Parent Name:</strong></label>
+    <br>
+
+    <input type="text"
+           name="name"
+           placeholder="Enter parent name"
+           required>
+
+    <br><br>
+
+    <label><strong>Phone:</strong></label>
+    <br>
+
+    <input type="text"
+           name="phone"
+           placeholder="Enter phone number">
+
+    <br><br>
+
+    <button type="submit">
+        Add Parent
+    </button>
+
+</form>
+
+<hr>
+
+<h3>Parents List</h3>
+
+<table border="1"
+       cellpadding="8"
+       cellspacing="0">
+
+    <tr>
+        <th>ID</th>
+        <th>Parent Name</th>
+        <th>Phone</th>
+    </tr>
+
+    {% if parents %}
+
+        {% for parent in parents %}
+
+        <tr>
+
+            <td>
+                {{ parent["id"] }}
+            </td>
+
+            <td>
+                {{ parent["name"] }}
+            </td>
+
+            <td>
+                {{ parent["phone"] }}
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    {% else %}
+
+        <tr>
+            <td colspan="3">
+                Weli parent lama gelin.
+            </td>
+        </tr>
+
+    {% endif %}
+
+</table>
+
+<br>
+
+<a href="/dashboard">
+    ← Back to Dashboard
+</a>
+
+{% endblock %}
